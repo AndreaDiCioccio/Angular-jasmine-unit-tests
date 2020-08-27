@@ -4,40 +4,25 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { WelcomeComponent } from './welcome.component';
 
 describe('WelcomeComponent', () => {
-    // autogenerted code
-/*     
-    let component: WelcomeComponent;
-    let fixture: ComponentFixture<WelcomeComponent>;
- 
-    // FROM DOCUMENTATION:
-    // You can ignore this section if you only run tests with the CLI ng test command because the CLI compiles //// the application before running the tests.
-    
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [ WelcomeComponent ]
-        }).compileComponents();
-    }));
- 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(WelcomeComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
 
-    it('should create', () => {
-        expect(component).toBeTruthy();
-    });
-*/
     // I added this code
-    let comp
-    let userService
+
+    let comp: WelcomeComponent
+    let userServiceMock: Partial<UserService>
+
+    userServiceMock = {
+        isLoggedIn:true,
+        user:{id:123, name:'pippo', age:45}
+    }
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers:[WelcomeComponent,{provide:UserService, useClass:UserService}]
+            providers:[WelcomeComponent,  {provide:UserService}]
         })
-        comp = TestBed.inject(WelcomeComponent)
-        userService = TestBed.inject(UserService)
+
+        let fixture =TestBed.createComponent(WelcomeComponent)
+        comp = fixture.componentInstance
+        userServiceMock = TestBed.inject(UserService)
     })
 
     it('should create', () => {
@@ -50,14 +35,14 @@ describe('WelcomeComponent', () => {
 
     it('should welcome logged in user after angular calls ngOnInit', () => {
         comp.ngOnInit()
-        expect(comp.welcome).toContain(userService.user.name)
+        expect(comp.welcome).toContain(userServiceMock.user.name)
     })
 
-    it('should ask user to log in if not logged in after ngOnInit'), () => {
-        userService.logout
+    it('should ask user to log in if not logged in after ngOnInit', () => {
+        userServiceMock.isLoggedIn = false
         comp.ngOnInit()
-        expect(comp.welcome).not.toContain(userService.user.name)
-        expect(comp.welcome).toContain('log in')
-    }
+        expect(comp.welcome).not.toMatch(userServiceMock.user.name)
+        expect(comp.welcome).toMatch('login')
+    })
     
 });

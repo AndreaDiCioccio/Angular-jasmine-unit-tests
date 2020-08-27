@@ -12,7 +12,7 @@ export class WelcomeComponent implements OnInit {
     constructor(private userService:UserService) { }
 
     ngOnInit(): void {
-        this.welcome = this.userService.isLoggedIn ? 'welcome' + this.userService.user.name : 'please login'
+        this.welcome = this.userService.isLoggedIn ? 'welcome ' + this.userService.user.name : 'please login'
     }
 
 }

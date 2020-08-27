@@ -9,7 +9,7 @@ import { User } from '../interfaces';
 
 export class UserService {
 
-    constructor( private errorService:ErrorsHandlerService ){}
+    constructor( private errorsService:ErrorsHandlerService ){}
 
     user:User = {id:123, name:'pippo', age:45}
     isLoggedIn:boolean = true
@@ -27,6 +27,6 @@ export class UserService {
     }
 
     generateError(error:string):void{
-        this.errorService.addError(error)
+        this.errorsService.addError(error)
     }
 }
